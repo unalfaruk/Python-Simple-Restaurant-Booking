@@ -6,9 +6,10 @@ from Booking import *
 def prepareDB():
     try:
         conn=sqlite3.connect("database.db")
+        c = conn.cursor()
         print("Database connection is successfull.")
 
-        conn.execute('''CREATE TABLE IF NOT EXISTS dates
+        c.execute('''CREATE TABLE IF NOT EXISTS dates
          (id INTEGER PRIMARY KEY AUTOINCREMENT,
          owner TEXT NOT NULL,
          howmanypeople INT NOT NULL,
@@ -17,6 +18,7 @@ def prepareDB():
 
         print("Table checking is ok.")
         print("\n---\n")
+        conn.commit()
         conn.close()
     except:
         print("Hata")
@@ -24,7 +26,7 @@ def prepareDB():
 
 
 def whishChoosing():
-    print("Please make a choice:")
+    print("\nPLEAE MAKE A CHOICE:")
     print("[1] New booking\n[2] Delete booking\n[3] Check the status for a day\n[4] Exit")
     try:
         choice = int(input("YOUR CHOICE: "))
