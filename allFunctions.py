@@ -41,6 +41,6 @@ def processChoosing(choosingParameter):
     elif choosingParameter==2:
         deleteBooking()
     elif choosingParameter==3:
-        checkBookingStatus()
+        bookingStatus()
     elif choosingParameter==4:
         sys.exit()

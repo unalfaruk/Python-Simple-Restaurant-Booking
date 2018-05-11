@@ -12,6 +12,15 @@ class Booking:
         print("\n\tYOUR INFO\nOwner: %s\nPeople: %s\nDate: %s\nTime: %s" % (str(info[1]),str(info[2]),str(info[3]),str(info[4])))
         conn.close()
 
+    def getInfoBrief(self,idNumber):
+        self.id=int(idNumber)
+        conn=sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute("select * from dates WHERE id=?", str(idNumber))
+        info=c.fetchone()
+        print("People: %s\tDate: %s\tTime: %s" % (str(info[2]),str(info[3]),str(info[4])))
+        conn.close()
+
     def cancel(self):
         conn=sqlite3.connect("database.db")
         c = conn.cursor()
@@ -74,5 +83,14 @@ def bookingStatus():
     dateRaw=input("Select a date(dd-mm-yyyy): ")
     dateProcessed=datetime.datetime.strptime(dateRaw, '%d-%m-%Y')
 
-    aBooking=Booking()
-    aBooking.getInfo(idRaw)
+    conn=sqlite3.connect("database.db")
+    c = conn.cursor()
+    c.execute("select * from dates WHERE dateOf=(?)", (str(dateProcessed),))
+    info=c.fetchall()
+    print("STATUS OF the DAY:\n")
+    for booking in info:
+        aBooking=Booking()
+        aBooking.getInfoBrief(booking[0])
+    input("Enter a key to continue...")
+
+    conn.close()
