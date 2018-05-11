@@ -4,18 +4,26 @@ import sqlite3
 class Booking:
 
     def getInfo(self,idNumber):
+        self.id=idNumber
         conn=sqlite3.connect("database.db")
         c = conn.cursor()
         c.execute("select * from dates WHERE id=?", idNumber)
         info=c.fetchone()
         print("\n\tYOUR INFO\nOwner: %s\nPeople: %s\nDate: %s\nTime: %s" % (str(info[1]),str(info[2]),str(info[3]),str(info[4])))
+        conn.close()
+
+    def cancel(self):
+        conn=sqlite3.connect("database.db")
+        c = conn.cursor()
         sure=str(input("Are you sure to cancel[Y/N]: "))
         if sure=="Y":
-            c.execute("delete from dates WHERE id=?", idNumber)
+            c.execute("delete from dates WHERE id=?", self.id)
+            conn.commit()
             print("The booking was deleted.")
         else:
             print("The cancelation was stopped.")
         conn.close()
+
 
     def setDate(self,dateOfParameter):
         self.dateOf=dateOfParameter
@@ -58,5 +66,13 @@ def newBooking():
 
 def deleteBooking():
     idRaw=input("Please type your booking ID number: ")
+    aBooking=Booking()
+    aBooking.getInfo(idRaw)
+    aBooking.cancel()
+
+def bookingStatus():
+    dateRaw=input("Select a date(dd-mm-yyyy): ")
+    dateProcessed=datetime.datetime.strptime(dateRaw, '%d-%m-%Y')
+
     aBooking=Booking()
     aBooking.getInfo(idRaw)
