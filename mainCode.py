@@ -1,16 +1,11 @@
-import sqlite3
-try:
-    conn=sqlite3.connect("database.db")
-    print("Database connection is successfull.")
+import datetime
+from allFunctions import *
 
-    conn.execute('''CREATE TABLE IF NOT EXISTS dates
-     (ID INT PRIMARY KEY NOT NULL,
-     OWNER TEXT NOT NULL,
-     HOWMANYPEOPLE INT NOT NULL,
-     DATEOF DATE NOT NULL,
-     TIMEOF DATETIME NOT NULL);''')
+prepareDB()
 
-    print("Table checking is ok.")
-except:
-    print("Hata")
-    raise
+currentDT=datetime.datetime.now()
+print ("Today: %s\nYou can select a date in the next 10 days." % str(currentDT))
+
+while 1:
+    choosing=whishChoosing()
+    processChoosing(choosing)
